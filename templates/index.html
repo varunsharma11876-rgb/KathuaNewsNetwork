@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kathua News Network</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="brand">
+        <h1>KATHUA <span>NEWS NETWORK</span></h1>
+        <p>Your News. Your Sports. Your Network.</p>
+    </div>
+    <div class="live-label">KNN NETWORK</div>
+</header>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="#cricket">Cricket</a>
+    <a href="#soccer">Football</a>
+    <a href="#news">Kathua News</a>
+    <a href="#sports">Sports</a>
+</nav>
+
+<section class="breaking">
+    <strong>NEWS DESK</strong>
+    <span>Welcome to Kathua News Network</span>
+</section>
+
+<main>
+    <section class="hero">
+        <div>
+            <p class="eyebrow">WELCOME TO KNN</p>
+            <h2>Your Local News and Sports Destination</h2>
+            <p>Watch news, follow cricket and football, and stay
+            connected with Kathua and the world.</p>
+        </div>
+    </section>
+
+    <section id="cricket">
+        <h2 class="section-title">🏏 Cricket</h2>
+        <p class="section-description">
+            Cricket coverage, match updates and highlights.
+        </p>
+        <div class="cards">
+        {% for channel in channels if channel.category == "Cricket" %}
+            <article class="card cricket">
+                <h3>{{ channel.name }}</h3>
+                <p>{{ channel.description }}</p>
+                <a href="/watch/{{ channel.id }}">Explore Cricket</a>
+            </article>
+        {% endfor %}
+        </div>
+    </section>
+
+    <section id="soccer">
+        <h2 class="section-title">⚽ Soccer / Football</h2>
+        <p class="section-description">
+            Football coverage, fixtures and highlights.
+        </p>
+        <div class="cards">
+        {% for channel in channels if channel.category == "Soccer" %}
+            <article class="card soccer">
+                <h3>{{ channel.name }}</h3>
+                <p>{{ channel.description }}</p>
+                <a href="/watch/{{ channel.id }}">Explore Football</a>
+            </article>
+        {% endfor %}
+        </div>
+    </section>
+
+    <section id="news">
+        <h2 class="section-title">📰 News</h2>
+        <div class="cards">
+        {% for channel in channels if "News" in channel.category %}
+            <article class="card news">
+                <h3>{{ channel.name }}</h3>
+                <p>{{ channel.description }}</p>
+                <a href="/watch/{{ channel.id }}">Explore News</a>
+            </article>
+        {% endfor %}
+        </div>
+    </section>
+
+    <section id="sports">
+        <h2 class="section-title">🏆 Sports Highlights</h2>
+        <div class="cards">
+        {% for channel in channels if channel.category == "Sports" %}
+            <article class="card sports">
+                <h3>{{ channel.name }}</h3>
+                <p>{{ channel.description }}</p>
+                <a href="/watch/{{ channel.id }}">Explore Sports</a>
+            </article>
+        {% endfor %}
+        </div>
+    </section>
+
+    <section class="score-panel">
+        <h2>Live Scores</h2>
+        <p id="scoreStatus">Connecting to score service...</p>
+    </section>
+</main>
+
+<footer>
+    <h3>KATHUA NEWS NETWORK</h3>
+    <p>Local News | Cricket | Football | Sports</p>
+    <p>© 2026 Kathua News Network</p>
+</footer>
+
+<script>
+fetch("/api/scores")
+.then(response => response.json())
+.then(data => {
+    document.getElementById("scoreStatus").textContent =
+        data.message;
+})
+.catch(() => {
+    document.getElementById("scoreStatus").textContent =
+        "Score service is currently unavailable.";
+});
+</script>
+
+</body>
+</html>
